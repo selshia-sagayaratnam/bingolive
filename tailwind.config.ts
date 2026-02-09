@@ -57,6 +57,15 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        bingo: {
+          pink: "hsl(var(--bingo-pink))",
+          purple: "hsl(var(--bingo-purple))",
+          blue: "hsl(var(--bingo-blue))",
+          green: "hsl(var(--bingo-green))",
+          yellow: "hsl(var(--bingo-yellow))",
+          orange: "hsl(var(--bingo-orange))",
+          red: "hsl(var(--bingo-red))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,25 +74,37 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        pop: {
+          "0%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1)" },
+        },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-2deg)" },
+          "50%": { transform: "rotate(2deg)" },
+        },
+        bounce: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        pop: "pop 0.3s ease-in-out",
+        wiggle: "wiggle 0.5s ease-in-out infinite",
+        bounce: "bounce 1s ease-in-out infinite",
+      },
+      fontFamily: {
+        display: ["Fredoka", "Comic Sans MS", "cursive"],
+        body: ["Nunito", "system-ui", "sans-serif"],
       },
     },
   },

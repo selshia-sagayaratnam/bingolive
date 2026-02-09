@@ -2,95 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Statement Bingo - Fun & Colorful Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 270 50% 98%;
+    --foreground: 270 50% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 270 50% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 270 50% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 280 80% 55%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 45 100% 60%;
+    --secondary-foreground: 45 100% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 270 30% 92%;
+    --muted-foreground: 270 20% 40%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 170 80% 45%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 270 30% 85%;
+    --input: 270 30% 85%;
+    --ring: 280 80% 55%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Bingo-specific colors */
+    --bingo-pink: 330 90% 65%;
+    --bingo-purple: 280 80% 55%;
+    --bingo-blue: 200 90% 55%;
+    --bingo-green: 150 80% 45%;
+    --bingo-yellow: 45 100% 60%;
+    --bingo-orange: 25 95% 55%;
+    --bingo-red: 0 85% 60%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Gradients */
+    --gradient-fun: linear-gradient(135deg, hsl(330, 90%, 65%), hsl(280, 80%, 55%), hsl(200, 90%, 55%));
+    --gradient-celebration: linear-gradient(135deg, hsl(45, 100%, 60%), hsl(25, 95%, 55%), hsl(330, 90%, 65%));
 
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 270 50% 98%;
+    --sidebar-foreground: 270 50% 10%;
+    --sidebar-primary: 280 80% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 170 80% 45%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 270 30% 85%;
+    --sidebar-ring: 280 80% 55%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 270 50% 8%;
+    --foreground: 270 30% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 270 50% 12%;
+    --card-foreground: 270 30% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 270 50% 12%;
+    --popover-foreground: 270 30% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 280 80% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 45 100% 55%;
+    --secondary-foreground: 45 100% 10%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 270 30% 20%;
+    --muted-foreground: 270 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 170 80% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 270 30% 25%;
+    --input: 270 30% 25%;
+    --ring: 280 80% 60%;
+
+    --sidebar-background: 270 50% 10%;
+    --sidebar-foreground: 270 30% 95%;
+    --sidebar-primary: 280 80% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 170 80% 50%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 270 30% 25%;
+    --sidebar-ring: 280 80% 60%;
   }
 }
 
@@ -102,4 +107,53 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer utilities {
+  .gradient-fun {
+    background: linear-gradient(135deg, hsl(330, 90%, 65%), hsl(280, 80%, 55%), hsl(200, 90%, 55%));
+  }
+
+  .gradient-celebration {
+    background: linear-gradient(135deg, hsl(45, 100%, 60%), hsl(25, 95%, 55%), hsl(330, 90%, 65%));
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(330, 90%, 65%), hsl(280, 80%, 55%), hsl(200, 90%, 55%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Bingo cell animations */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.animate-pop {
+  animation: pop 0.3s ease-in-out;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  animation: confetti-fall 3s linear forwards;
 }
