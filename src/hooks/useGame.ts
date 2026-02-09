@@ -95,6 +95,18 @@ export const useGame = (gameCode: string | null) => {
     fetchPlayers();
   }, [fetchPlayers]);
 
+  // Polling fallback for reliability
+  useEffect(() => {
+    if (!game?.id) return;
+
+    const interval = setInterval(() => {
+      fetchGame();
+      fetchPlayers();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [game?.id, fetchGame, fetchPlayers]);
+
   // Real-time subscriptions
   useEffect(() => {
     if (!game?.id) return;
