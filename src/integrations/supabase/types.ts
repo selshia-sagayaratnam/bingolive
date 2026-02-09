@@ -54,6 +54,7 @@ export type Database = {
       }
       players: {
         Row: {
+          bingo_at: string | null
           created_at: string
           game_id: string
           has_bingo: boolean
@@ -63,6 +64,7 @@ export type Database = {
           name: string
         }
         Insert: {
+          bingo_at?: string | null
           created_at?: string
           game_id: string
           has_bingo?: boolean
@@ -72,6 +74,7 @@ export type Database = {
           name: string
         }
         Update: {
+          bingo_at?: string | null
           created_at?: string
           game_id?: string
           has_bingo?: boolean

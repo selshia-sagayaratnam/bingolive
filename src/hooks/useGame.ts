@@ -10,6 +10,7 @@ interface Game {
   game_code: string;
   status: "waiting" | "playing" | "finished";
   winner_id: string | null;
+  created_at: string;
 }
 
 interface Player {
@@ -19,6 +20,7 @@ interface Player {
   marked_squares: boolean[];
   has_bingo: boolean;
   is_host: boolean;
+  bingo_at: string | null;
 }
 
 export const useGame = (gameCode: string | null) => {
@@ -195,12 +197,17 @@ export const useGame = (gameCode: string | null) => {
     const { hasBingo } = checkBingo(newMarkedSquares);
 
     try {
+      const updateData: Record<string, unknown> = {
+        marked_squares: newMarkedSquares,
+        has_bingo: hasBingo,
+      };
+      if (hasBingo && !currentPlayer.has_bingo) {
+        updateData.bingo_at = new Date().toISOString();
+      }
+
       const { error } = await supabase
         .from("players")
-        .update({
-          marked_squares: newMarkedSquares,
-          has_bingo: hasBingo,
-        })
+        .update(updateData)
         .eq("id", currentPlayer.id);
 
       if (error) throw error;
@@ -266,6 +273,7 @@ export const useGame = (gameCode: string | null) => {
         .update({
           marked_squares: Array(25).fill(false).map((_, i) => i === 12),
           has_bingo: false,
+          bingo_at: null,
         })
         .eq("game_id", game.id);
 
