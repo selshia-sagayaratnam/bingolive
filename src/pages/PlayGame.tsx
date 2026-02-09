@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGame } from "@/hooks/useGame";
 import BingoCard from "@/components/BingoCard";
@@ -6,8 +6,18 @@ import PlayerList from "@/components/PlayerList";
 import Confetti from "@/components/Confetti";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { checkBingo } from "@/lib/bingo-utils";
-import { Loader2, Trophy, RefreshCw, Home, StopCircle, Crown } from "lucide-react";
+import { Loader2, Trophy, RefreshCw, Home, StopCircle, Crown, Clock, Medal } from "lucide-react";
+
+const formatDuration = (startMs: number, endMs: number): string => {
+  const diff = Math.max(0, endMs - startMs);
+  const totalSeconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  if (minutes > 0) return `${minutes}m ${seconds}s`;
+  return `${seconds}s`;
+};
 
 const PlayGame = () => {
   const { gameCode } = useParams<{ gameCode: string }>();
@@ -23,6 +33,16 @@ const PlayGame = () => {
     endGame,
     resetGame,
   } = useGame(gameCode || null);
+
+  const winners = useMemo(() => 
+    players
+      .filter((p) => p.has_bingo)
+      .sort((a, b) => {
+        if (!a.bingo_at || !b.bingo_at) return 0;
+        return new Date(a.bingo_at).getTime() - new Date(b.bingo_at).getTime();
+      }),
+    [players]
+  );
 
   useEffect(() => {
     if (game?.status === "waiting") {
@@ -56,7 +76,6 @@ const PlayGame = () => {
   }
 
   const { winningLine } = checkBingo(currentPlayer.marked_squares);
-  const winners = players.filter((p) => p.has_bingo);
   const isFinished = game.status === "finished";
   const currentPlayerHasBingo = currentPlayer.has_bingo;
 
@@ -68,12 +87,49 @@ const PlayGame = () => {
         {/* Game Over Banner */}
         {isFinished && (
           <Card className="mb-6 gradient-celebration text-white">
-            <CardContent className="py-6 text-center">
+            <CardContent className="py-6">
               <Trophy className="w-12 h-12 mx-auto mb-2" />
-              <h2 className="text-3xl font-bold mb-2">🎉 Game Over! 🎉</h2>
-              <p className="text-white/80">
-                {winners.length} player{winners.length !== 1 ? "s" : ""} got BINGO!
-              </p>
+              <h2 className="text-3xl font-bold mb-4 text-center">🎉 Game Over! 🎉</h2>
+              {winners.length > 0 ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-white/20">
+                      <TableHead className="text-white/80">#</TableHead>
+                      <TableHead className="text-white/80">Player</TableHead>
+                      <TableHead className="text-white/80 text-right">
+                        <Clock className="w-4 h-4 inline mr-1" />
+                        Time
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {winners.map((w, i) => {
+                      const completionTime = w.bingo_at
+                        ? formatDuration(new Date(game.created_at).getTime(), new Date(w.bingo_at).getTime())
+                        : "—";
+                      return (
+                        <TableRow key={w.id} className="border-white/20">
+                          <TableCell className="font-bold text-lg">
+                            {i === 0 ? <Medal className="w-5 h-5 text-yellow-300" /> : 
+                             i === 1 ? <Medal className="w-5 h-5 text-gray-300" /> :
+                             i === 2 ? <Medal className="w-5 h-5 text-amber-600" /> :
+                             `#${i + 1}`}
+                          </TableCell>
+                          <TableCell className="font-semibold">
+                            {w.name}
+                            {w.id === currentPlayer.id && (
+                              <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">You</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right font-mono">{completionTime}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              ) : (
+                <p className="text-white/80 text-center">No winners this round!</p>
+              )}
             </CardContent>
           </Card>
         )}
