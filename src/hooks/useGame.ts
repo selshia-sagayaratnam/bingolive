@@ -205,16 +205,7 @@ export const useGame = (gameCode: string | null) => {
 
       if (error) throw error;
 
-      // If this player got BINGO, update the game
-      if (hasBingo && game && !game.winner_id) {
-        await supabase
-          .from("games")
-          .update({
-            winner_id: currentPlayer.id,
-            status: "finished",
-          })
-          .eq("id", game.id);
-      }
+      // No longer auto-finish the game on bingo - host controls when to end
     } catch (err) {
       console.error(err);
       toast({
@@ -246,12 +237,30 @@ export const useGame = (gameCode: string | null) => {
     }
   };
 
+  // End game (host only)
+  const endGame = async () => {
+    if (!game?.id || !currentPlayer?.is_host) return;
+
+    try {
+      await supabase
+        .from("games")
+        .update({ status: "finished" })
+        .eq("id", game.id);
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Error",
+        description: "Failed to end game",
+        variant: "destructive",
+      });
+    }
+  };
+
   // Reset game (host only)
   const resetGame = async () => {
     if (!game?.id || !currentPlayer?.is_host) return;
 
     try {
-      // Reset all players
       await supabase
         .from("players")
         .update({
@@ -260,7 +269,6 @@ export const useGame = (gameCode: string | null) => {
         })
         .eq("game_id", game.id);
 
-      // Reset game
       await supabase
         .from("games")
         .update({
@@ -287,6 +295,7 @@ export const useGame = (gameCode: string | null) => {
     joinGame,
     markSquare,
     startGame,
+    endGame,
     resetGame,
   };
 };
