@@ -34,7 +34,15 @@ const PlayGame = () => {
     resetGame,
   } = useGame(gameCode || null);
 
-  const winners = useMemo(() => 
+  // ✅ Mark FREE tile at index 12 automatically
+  const markedSquaresWithFree = useMemo(() => {
+    if (!currentPlayer) return [];
+    const squares = [...currentPlayer.marked_squares];
+    squares[12] = true; // center FREE tile
+    return squares;
+  }, [currentPlayer]);
+
+  const winners = useMemo(() =>
     players
       .filter((p) => p.has_bingo)
       .sort((a, b) => {
@@ -75,7 +83,8 @@ const PlayGame = () => {
     );
   }
 
-  const { winningLine } = checkBingo(currentPlayer.marked_squares);
+  // ✅ Use the markedSquaresWithFree for bingo detection
+  const { winningLine } = checkBingo(markedSquaresWithFree);
   const isFinished = game.status === "finished";
   const currentPlayerHasBingo = currentPlayer.has_bingo;
 
@@ -146,7 +155,7 @@ const PlayGame = () => {
               <CardContent>
                 <BingoCard
                   statements={game.statements}
-                  markedSquares={currentPlayer.marked_squares}
+                  markedSquares={markedSquaresWithFree} // ✅ FREE tile included
                   winningLine={winningLine}
                   onMarkSquare={markSquare}
                   disabled={isFinished}
@@ -187,7 +196,7 @@ const PlayGame = () => {
               </Card>
             )}
 
-            {/* Player Players */}
+            {/* Players List */}
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg">Players</CardTitle>
