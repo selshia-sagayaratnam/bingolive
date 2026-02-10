@@ -10,6 +10,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { checkBingo } from "@/lib/bingo-utils";
 import { Loader2, Trophy, RefreshCw, Home, StopCircle, Crown, Clock, Medal } from "lucide-react";
 
+// Helper to include FREE tile in the center for any player's marked squares
+const addFreeTile = (squares: boolean[]) => {
+  const newSquares = [...squares];
+  newSquares[12] = true; // center FREE tile
+  return newSquares;
+};
+
 const formatDuration = (startMs: number, endMs: number): string => {
   const diff = Math.max(0, endMs - startMs);
   const totalSeconds = Math.floor(diff / 1000);
@@ -34,14 +41,7 @@ const PlayGame = () => {
     resetGame,
   } = useGame(gameCode || null);
 
-  // ✅ Mark FREE tile at index 12 automatically
-  const markedSquaresWithFree = useMemo(() => {
-    if (!currentPlayer) return [];
-    const squares = [...currentPlayer.marked_squares];
-    squares[12] = true; // center FREE tile
-    return squares;
-  }, [currentPlayer]);
-
+  // Winners sorted by bingo time
   const winners = useMemo(() =>
     players
       .filter((p) => p.has_bingo)
@@ -52,6 +52,7 @@ const PlayGame = () => {
     [players]
   );
 
+  // Redirect to lobby if game is waiting
   useEffect(() => {
     if (game?.status === "waiting") {
       navigate(`/lobby/${gameCode}`);
@@ -83,8 +84,10 @@ const PlayGame = () => {
     );
   }
 
-  // ✅ Use the markedSquaresWithFree for bingo detection
-  const { winningLine } = checkBingo(markedSquaresWithFree);
+  // Mark FREE tile for bingo check
+  const currentPlayerSquaresWithFree = addFreeTile(currentPlayer.marked_squares);
+  const { winningLine } = checkBingo(currentPlayerSquaresWithFree);
+
   const isFinished = game.status === "finished";
   const currentPlayerHasBingo = currentPlayer.has_bingo;
 
@@ -119,7 +122,7 @@ const PlayGame = () => {
                       return (
                         <TableRow key={w.id} className="border-white/20">
                           <TableCell className="font-bold text-lg">
-                            {i === 0 ? <Medal className="w-5 h-5 text-yellow-300" /> : 
+                            {i === 0 ? <Medal className="w-5 h-5 text-yellow-300" /> :
                              i === 1 ? <Medal className="w-5 h-5 text-gray-300" /> :
                              i === 2 ? <Medal className="w-5 h-5 text-amber-600" /> :
                              `#${i + 1}`}
@@ -155,7 +158,7 @@ const PlayGame = () => {
               <CardContent>
                 <BingoCard
                   statements={game.statements}
-                  markedSquares={markedSquaresWithFree} // ✅ FREE tile included
+                  markedSquares={currentPlayerSquaresWithFree}
                   winningLine={winningLine}
                   onMarkSquare={markSquare}
                   disabled={isFinished}
@@ -196,14 +199,17 @@ const PlayGame = () => {
               </Card>
             )}
 
-            {/* Players List */}
+            {/* Players */}
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg">Players</CardTitle>
               </CardHeader>
               <CardContent>
                 <PlayerList
-                  players={players}
+                  players={players.map(p => ({
+                    ...p,
+                    marked_squares: addFreeTile(p.marked_squares),
+                  }))}
                   currentPlayerId={currentPlayer.id}
                   showProgress={true}
                 />
