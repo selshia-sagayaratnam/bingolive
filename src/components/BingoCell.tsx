@@ -36,9 +36,9 @@ const BingoCell = ({
       onClick={handleClick}
       disabled={disabled || isFreeSpace}
       className={cn(
-        "relative aspect-square p-1 sm:p-2 rounded-lg border-2 transition-all duration-200",
+        "relative aspect-square p-1.5 sm:p-2.5 rounded-lg border-2 transition-all duration-200",
         "flex items-center justify-center text-center overflow-hidden",
-        "text-[10px] sm:text-xs md:text-sm font-medium leading-tight",
+        "text-[7px] sm:text-[9px] md:text-[11px] font-medium leading-snug break-words hyphens-auto",
         isMarked || isFreeSpace
           ? cn(getCellColor(index), "text-white border-white/30 shadow-lg")
           : "bg-card hover:bg-muted border-border hover:border-primary/50",
