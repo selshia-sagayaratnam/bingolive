@@ -48,7 +48,7 @@ const BingoCard = ({
             key={index}
             index={index}
             statement={statement}
-            isMarked={markedSquares[index]}
+            isMarked={index === 12 || markedSquares[index]}
             isFreeSpace={index === 12}
             isWinningCell={winningLine?.includes(index) ?? false}
             onMark={() => onMarkSquare(index)}
