@@ -187,10 +187,10 @@ const PlayGame = () => {
               </Card>
             )}
 
-            {/* Player Leaderboard */}
+            {/* Player Participants */}
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Leaderboard</CardTitle>
+                <CardTitle className="text-lg">Participants</CardTitle>
               </CardHeader>
               <CardContent>
                 <PlayerList
