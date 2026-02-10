@@ -190,7 +190,7 @@ const PlayGame = () => {
             {/* Player Leaderboard */}
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Leaderboard</CardTitle>
+                <CardTitle className="text-lg">Players</CardTitle>
               </CardHeader>
               <CardContent>
                 <PlayerList
