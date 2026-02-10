@@ -20,7 +20,7 @@ const BingoCard = ({
   const displayStatements = [...statements.slice(0, 12), "FREE", ...statements.slice(12, 24)];
 
   return (
-    <div className="w-full max-w-lg mx-auto">
+    <div className="w-full max-w-xl mx-auto">
       {/* BINGO Header */}
       <div className="grid grid-cols-5 gap-1 sm:gap-2 mb-2">
         {["B", "I", "N", "G", "O"].map((letter, i) => (
