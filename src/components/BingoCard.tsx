@@ -2,14 +2,23 @@ import BingoCell from "./BingoCell";
 import { cn } from "@/lib/utils";
 
 interface BingoCardProps {
-  statements: string[];
+  statements: string[]; // might be broken
   markedSquares: boolean[];
   winningLine: number[] | null;
   onMarkSquare: (index: number) => void;
   disabled?: boolean;
 }
 
-const FREE_TILE_INDEX = 12;
+// Helper: flatten array or weird multi-line string into single line
+const normalizeStatement = (statement: string | string[]): string => {
+  if (Array.isArray(statement)) {
+    statement = statement.join(" "); // join letters
+  }
+  return statement
+    .replace(/[\r\n]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+};
 
 const BingoCard = ({
   statements,
@@ -18,11 +27,12 @@ const BingoCard = ({
   onMarkSquare,
   disabled = false,
 }: BingoCardProps) => {
-  // Insert "FREE" at center (index 12)
+  // Insert "FREE" at center (index 12) after cleaning
+  const cleanStatements = statements.map(normalizeStatement);
   const displayStatements = [
-    ...statements.slice(0, FREE_TILE_INDEX),
+    ...cleanStatements.slice(0, 12),
     "FREE",
-    ...statements.slice(FREE_TILE_INDEX, 24),
+    ...cleanStatements.slice(12, 24),
   ];
 
   return (
@@ -49,26 +59,18 @@ const BingoCard = ({
 
       {/* Bingo Grid */}
       <div className="grid grid-cols-5 gap-1 sm:gap-2 bg-muted p-2 rounded-xl">
-        {displayStatements.map((statement, index) => {
-          const isFreeSpace = index === FREE_TILE_INDEX;
-
-          return (
-            <BingoCell
-              key={index}
-              index={index}
-              statement={statement}
-              isFreeSpace={isFreeSpace}
-              isMarked={isFreeSpace || markedSquares[index]}
-              isWinningCell={winningLine?.includes(index) ?? false}
-              onMark={() => {
-                // 🚫 Do nothing if FREE tile or board disabled
-                if (isFreeSpace || disabled) return;
-                onMarkSquare(index);
-              }}
-              disabled={disabled || isFreeSpace}
-            />
-          );
-        })}
+        {displayStatements.map((statement, index) => (
+          <BingoCell
+            key={index}
+            index={index}
+            statement={statement}
+            isMarked={index === 12 || markedSquares[index]}
+            isFreeSpace={index === 12}
+            isWinningCell={winningLine?.includes(index) ?? false}
+            onMark={() => onMarkSquare(index)}
+            disabled={disabled}
+          />
+        ))}
       </div>
     </div>
   );
