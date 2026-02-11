@@ -42,11 +42,12 @@ const BingoCell = ({
 
   const getFontSize = (text: string) => {
     const len = text.length;
-    if (len <= 10) return "text-[11px] sm:text-base";
-    if (len <= 20) return "text-[9px] sm:text-sm";
-    if (len <= 35) return "text-[8px] sm:text-xs";
-    if (len <= 55) return "text-[7px] sm:text-[10px]";
-    return "text-[6px] sm:text-[9px]";
+    if (len <= 8) return "text-[11px] sm:text-base leading-tight";
+    if (len <= 15) return "text-[9px] sm:text-sm leading-tight";
+    if (len <= 25) return "text-[7px] sm:text-xs leading-snug";
+    if (len <= 40) return "text-[6px] sm:text-[11px] leading-snug";
+    if (len <= 60) return "text-[5px] sm:text-[10px] leading-snug";
+    return "text-[4.5px] sm:text-[9px] leading-snug";
   };
 
   const handleClick = () => {
