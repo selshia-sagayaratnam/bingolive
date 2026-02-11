@@ -27,15 +27,25 @@ const BingoCard = ({
   onMarkSquare,
   disabled = false,
 }: BingoCardProps) => {
-  // Ensure statements is always an array
-  const statementsArray = Array.isArray(statements)
-    ? statements
-    : typeof statements === "string"
-      ? (statements as string).split(",").map((s: string) => s.trim())
-      : [];
+  // Ensure statements is always a clean array
+  let statementsArray: string[];
+  if (Array.isArray(statements)) {
+    statementsArray = statements;
+  } else if (typeof statements === "string") {
+    try {
+      const parsed = JSON.parse(statements as string);
+      statementsArray = Array.isArray(parsed) ? parsed : [parsed];
+    } catch {
+      statementsArray = (statements as string).split(",").map((s: string) => s.trim());
+    }
+  } else {
+    statementsArray = [];
+  }
 
-  // Insert "FREE" at center (index 12) after cleaning
-  const cleanStatements = statementsArray.map(normalizeStatement);
+  // Strip any remaining quotes/brackets from each statement
+  const cleanStatements = statementsArray.map((s) =>
+    normalizeStatement(String(s).replace(/^[\["]+|[\]"]+$/g, ""))
+  );
   const displayStatements = [
     ...cleanStatements.slice(0, 12),
     "FREE",
