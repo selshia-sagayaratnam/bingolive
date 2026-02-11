@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { getCellColor } from "@/lib/bingo-utils";
 import { Star } from "lucide-react";
@@ -13,6 +13,16 @@ interface BingoCellProps {
   disabled?: boolean;
 }
 
+/** 🔧 Cleans broken imports like:
+ * i\n a\n m\n h\n u\n m\n a\n n
+ */
+const cleanStatement = (text: string) =>
+  text
+    .replace(/[\r\n]+/g, " ")   // remove newlines
+    .replace(/\s+/g, " ")       // collapse spaces
+    .replace(/[^\x20-\x7E]/g, "") // strip hidden unicode junk
+    .trim();
+
 const BingoCell = ({
   index,
   statement,
@@ -22,12 +32,13 @@ const BingoCell = ({
   onMark,
   disabled = false,
 }: BingoCellProps) => {
-    console.log("BINGO CELL STATEMENT:", statement);
-  console.log(
-    "CHAR CODES:",
-    [...statement].map(c => c.charCodeAt(0))
-  );
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // ✅ Sanitize once per render
+  const displayText = useMemo(
+    () => cleanStatement(statement),
+    [statement]
+  );
 
   const getFontSize = (text: string) => {
     const len = text.length;
@@ -52,7 +63,7 @@ const BingoCell = ({
       className={cn(
         "relative aspect-square p-1.5 sm:p-2.5 rounded-lg border-2 transition-all duration-200",
         "flex items-center justify-center text-center overflow-hidden",
-        getFontSize(statement),
+        getFontSize(displayText),
         "font-medium leading-tight break-words",
         isMarked || isFreeSpace
           ? cn(getCellColor(index), "text-white border-white/30 shadow-lg")
@@ -69,8 +80,8 @@ const BingoCell = ({
           <span className="text-[10px] sm:text-xs font-bold">FREE</span>
         </div>
       ) : (
-        <span className="block w-full text-center">
-          {statement}
+        <span className="block w-full text-center line-clamp-4">
+          {displayText}
         </span>
       )}
 
