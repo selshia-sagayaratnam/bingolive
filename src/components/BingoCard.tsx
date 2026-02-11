@@ -27,8 +27,15 @@ const BingoCard = ({
   onMarkSquare,
   disabled = false,
 }: BingoCardProps) => {
+  // Ensure statements is always an array
+  const statementsArray = Array.isArray(statements)
+    ? statements
+    : typeof statements === "string"
+      ? (statements as string).split(",").map((s: string) => s.trim())
+      : [];
+
   // Insert "FREE" at center (index 12) after cleaning
-  const cleanStatements = statements.map(normalizeStatement);
+  const cleanStatements = statementsArray.map(normalizeStatement);
   const displayStatements = [
     ...cleanStatements.slice(0, 12),
     "FREE",
