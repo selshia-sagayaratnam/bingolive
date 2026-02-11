@@ -26,10 +26,11 @@ const BingoCell = ({
 
   const getFontSize = (text: string) => {
     const len = text.length;
-    if (len <= 10) return "text-[11px] sm:text-sm";
-    if (len <= 20) return "text-[9px] sm:text-xs";
-    if (len <= 40) return "text-[7px] sm:text-[10px]";
-    return "text-[6px] sm:text-[8px] md:text-[9px]";
+    if (len <= 12) return "text-sm sm:text-base";
+    if (len <= 25) return "text-xs sm:text-sm";
+    if (len <= 45) return "text-[10px] sm:text-xs";
+    if (len <= 70) return "text-[9px] sm:text-[10px]";
+    return "text-[8px] sm:text-[9px]";
   };
 
   const handleClick = () => {
@@ -46,7 +47,8 @@ const BingoCell = ({
       className={cn(
         "relative aspect-square p-1.5 sm:p-2.5 rounded-lg border-2 transition-all duration-200",
         "flex items-center justify-center text-center overflow-hidden",
-        getFontSize(statement), "font-medium leading-snug break-words hyphens-auto",
+        getFontSize(statement),
+        "font-medium leading-tight break-words",
         isMarked || isFreeSpace
           ? cn(getCellColor(index), "text-white border-white/30 shadow-lg")
           : "bg-card hover:bg-muted border-border hover:border-primary/50",
@@ -59,12 +61,14 @@ const BingoCell = ({
       {isFreeSpace ? (
         <div className="flex flex-col items-center gap-1">
           <Star className="w-4 h-4 sm:w-6 sm:h-6 fill-current" />
-          <span className="text-[8px] sm:text-xs font-bold">FREE</span>
+          <span className="text-[10px] sm:text-xs font-bold">FREE</span>
         </div>
       ) : (
-        <span className="line-clamp-4">{statement}</span>
+        <span className="block w-full text-center">
+          {statement}
+        </span>
       )}
-      
+
       {isMarked && !isFreeSpace && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/10">
           <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/30 flex items-center justify-center">
