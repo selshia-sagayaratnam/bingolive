@@ -22,6 +22,11 @@ const BingoCell = ({
   onMark,
   disabled = false,
 }: BingoCellProps) => {
+    console.log("BINGO CELL STATEMENT:", statement);
+  console.log(
+    "CHAR CODES:",
+    [...statement].map(c => c.charCodeAt(0))
+  );
   const [isAnimating, setIsAnimating] = useState(false);
 
   const getFontSize = (text: string) => {
