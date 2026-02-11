@@ -42,11 +42,11 @@ const BingoCell = ({
 
   const getFontSize = (text: string) => {
     const len = text.length;
-    if (len <= 12) return "text-sm sm:text-base";
-    if (len <= 25) return "text-xs sm:text-sm";
-    if (len <= 45) return "text-[10px] sm:text-xs";
-    if (len <= 70) return "text-[9px] sm:text-[10px]";
-    return "text-[8px] sm:text-[9px]";
+    if (len <= 10) return "text-[11px] sm:text-base";
+    if (len <= 20) return "text-[9px] sm:text-sm";
+    if (len <= 35) return "text-[8px] sm:text-xs";
+    if (len <= 55) return "text-[7px] sm:text-[10px]";
+    return "text-[6px] sm:text-[9px]";
   };
 
   const handleClick = () => {
@@ -62,7 +62,7 @@ const BingoCell = ({
       disabled={disabled || isFreeSpace}
       className={cn(
         "relative aspect-square p-1 sm:p-1.5 rounded-lg border-2 transition-all duration-200",
-        "flex items-center justify-center text-center min-w-0 min-h-0 overflow-hidden",
+        "flex items-center justify-center text-center min-w-0 min-h-0",
         getFontSize(displayText),
         "font-medium leading-tight break-words",
         isMarked || isFreeSpace
@@ -80,7 +80,7 @@ const BingoCell = ({
           <span className="text-[10px] sm:text-xs font-bold">FREE</span>
         </div>
       ) : (
-        <span className="block w-full text-center overflow-hidden text-ellipsis">
+        <span className="block w-full text-center break-words leading-tight hyphens-auto">
           {displayText}
         </span>
       )}
