@@ -61,8 +61,8 @@ const BingoCell = ({
       onClick={handleClick}
       disabled={disabled || isFreeSpace}
       className={cn(
-        "relative aspect-square p-1.5 sm:p-2.5 rounded-lg border-2 transition-all duration-200",
-        "flex items-center justify-center text-center overflow-hidden",
+        "relative aspect-square p-1 sm:p-1.5 rounded-lg border-2 transition-all duration-200",
+        "flex items-center justify-center text-center",
         getFontSize(displayText),
         "font-medium leading-tight break-words",
         isMarked || isFreeSpace
@@ -80,7 +80,7 @@ const BingoCell = ({
           <span className="text-[10px] sm:text-xs font-bold">FREE</span>
         </div>
       ) : (
-        <span className="block w-full text-center line-clamp-4">
+        <span className="block w-full text-center overflow-hidden text-ellipsis">
           {displayText}
         </span>
       )}
