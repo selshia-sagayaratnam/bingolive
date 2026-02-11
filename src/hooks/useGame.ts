@@ -205,7 +205,7 @@ export const useGame = (gameCode: string | null) => {
 
     const newMarkedSquares = [...currentPlayer.marked_squares];
     newMarkedSquares[index] = true;
-
+    newMarkedSquares[12] = true; // Ensure FREE center tile is always marked
     const { hasBingo } = checkBingo(newMarkedSquares);
 
     try {
