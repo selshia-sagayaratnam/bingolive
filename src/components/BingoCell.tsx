@@ -62,7 +62,7 @@ const BingoCell = ({
       disabled={disabled || isFreeSpace}
       className={cn(
         "relative aspect-square p-1 sm:p-1.5 rounded-lg border-2 transition-all duration-200",
-        "flex items-center justify-center text-center",
+        "flex items-center justify-center text-center min-w-0 min-h-0 overflow-hidden",
         getFontSize(displayText),
         "font-medium leading-tight break-words",
         isMarked || isFreeSpace
